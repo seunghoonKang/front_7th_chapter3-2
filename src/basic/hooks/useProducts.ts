@@ -58,10 +58,29 @@ export function useProducts() {
     setProducts((prev) => prev.filter((p) => p.id !== productId));
   }, []);
 
+  const filterBySearchTerm = useCallback(
+    (searchTerm: string): ProductWithUI[] => {
+      if (!searchTerm.trim()) {
+        return products;
+      }
+
+      const lowerSearchTerm = searchTerm.toLowerCase();
+
+      return products.filter(
+        (product) =>
+          product.name.toLowerCase().includes(lowerSearchTerm) ||
+          (product.description &&
+            product.description.toLowerCase().includes(lowerSearchTerm))
+      );
+    },
+    [products]
+  );
+
   return {
     products,
     addProduct,
     updateProduct,
     deleteProduct,
+    filterBySearchTerm,
   };
 }
