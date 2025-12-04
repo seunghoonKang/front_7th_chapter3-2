@@ -45,7 +45,6 @@ const App = () => {
     cart,
     setCart,
     totalItemCount,
-    setTotalItemCount,
     addToCart,
     updateQuantity,
     calculateCartTotal,
@@ -56,29 +55,7 @@ const App = () => {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
-  useEffect(() => {
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    setTotalItemCount(count);
-  }, [cart]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("products", JSON.stringify(products));
-  // }, [products]);
-
-  // useEffect(() => {
-  //   localStorage.setItem("coupons", JSON.stringify(coupons));
-  // }, [coupons]);
-
-  useEffect(() => {
-    if (cart.length > 0) {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    } else {
-      localStorage.removeItem("cart");
-    }
-  }, [cart]);
-
   const totals = calculateCartTotal(selectedCoupon);
-
   // 검색어로 상품 필터링
   const filteredProducts = filterProductsBySearchTerm(debouncedSearchTerm);
 
@@ -133,6 +110,7 @@ const App = () => {
             getRemainingStock={getRemainingStock}
             addToCart={addToCart}
             cart={cart}
+            setCart={setCart}
             removeFromCart={removeFromCart}
             updateQuantity={updateQuantity}
             coupons={coupons}
@@ -142,7 +120,6 @@ const App = () => {
             calculateItemTotal={calculateItemTotal}
             setSelectedCoupon={setSelectedCoupon}
             addNotification={addNotification}
-            setCart={setCart}
           />
         )}
       </main>

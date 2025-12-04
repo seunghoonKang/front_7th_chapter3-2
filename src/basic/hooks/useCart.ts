@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CartItem, Coupon } from "../../types";
 import { ProductWithUI } from "./useProducts";
 import { cartModel } from "../models/cart";
@@ -107,6 +107,11 @@ export const useCart = ({ addNotification }: UseCartProps) => {
   const getRemainingStock = (product: ProductWithUI) => {
     return cartModel.getRemainingStock(cart, product);
   };
+
+  useEffect(() => {
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+    setTotalItemCount(count);
+  }, [cart]);
 
   return {
     cart,
