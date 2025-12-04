@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { Coupon } from "../../types";
 import { initialCoupons } from "../constants";
 import { couponModel } from "../models/coupon";
+import { useLocalStorage } from "../utils/hooks/useLocalStorage";
 
 interface UseCouponsProps {
   addNotification: (
@@ -10,17 +11,10 @@ interface UseCouponsProps {
   ) => void;
 }
 export const useCoupons = ({ addNotification }: UseCouponsProps) => {
-  const [coupons, setCoupons] = useState<Coupon[]>(() => {
-    const saved = localStorage.getItem("coupons");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return initialCoupons;
-      }
-    }
-    return initialCoupons;
-  });
+  const [coupons, setCoupons] = useLocalStorage<Coupon[]>(
+    "coupons",
+    initialCoupons
+  );
 
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [showCouponForm, setShowCouponForm] = useState(false);

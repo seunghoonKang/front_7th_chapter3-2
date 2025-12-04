@@ -3,6 +3,7 @@ import { CartItem, Coupon } from "../../types";
 import { ProductWithUI } from "./useProducts";
 import { cartModel } from "../models/cart";
 import { couponModel } from "../models/coupon";
+import { useLocalStorage } from "../utils/hooks/useLocalStorage";
 
 // 1. 장바구니 상태 관리 (localStorage 연동)
 // 2. 상품 추가/삭제/수량 변경
@@ -35,17 +36,7 @@ interface UseCartProps {
   ) => void;
 }
 export const useCart = ({ addNotification }: UseCartProps) => {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem("cart");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        return [];
-      }
-    }
-    return [];
-  });
+  const [cart, setCart] = useLocalStorage<CartItem[]>("cart", []);
   const [totalItemCount, setTotalItemCount] = useState(0);
 
   const addToCart = (product: ProductWithUI) => {
