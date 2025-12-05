@@ -1,23 +1,8 @@
-import { CartItem } from "../../../types";
-import { ProductWithUI } from "../../hooks/useProducts";
+import { useCart } from "../../hooks/useCart";
 
-interface ShoppingCartProps {
-  cart: CartItem[];
-  calculateItemTotal: (item: CartItem) => number;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (
-    productId: string,
-    quantity: number,
-    product: ProductWithUI
-  ) => void;
-}
-
-export const ShoppingCart = ({
-  cart,
-  calculateItemTotal,
-  removeFromCart,
-  updateQuantity,
-}: ShoppingCartProps) => {
+export const ShoppingCart = () => {
+  const { cart, calculateItemTotal, removeFromCart, updateQuantity } =
+    useCart();
   return (
     <section className="bg-white rounded-lg border border-gray-200 p-4">
       <h2 className="text-lg font-semibold mb-4 flex items-center">

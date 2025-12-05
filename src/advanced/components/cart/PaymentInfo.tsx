@@ -1,11 +1,11 @@
+import { useCart } from "../../hooks/useCart";
+
 interface PaymentInfoProps {
-  totals: {
-    totalBeforeDiscount: number;
-    totalAfterDiscount: number;
-  };
   completeOrder: () => void;
 }
-export const PaymentInfo = ({ totals, completeOrder }: PaymentInfoProps) => {
+export const PaymentInfo = ({ completeOrder }: PaymentInfoProps) => {
+  const { calculateCartTotal } = useCart();
+  const totals = calculateCartTotal();
   return (
     <section className="bg-white rounded-lg border border-gray-200 p-4">
       <h3 className="text-lg font-semibold mb-4">결제 정보</h3>

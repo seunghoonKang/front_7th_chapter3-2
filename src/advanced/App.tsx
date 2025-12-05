@@ -37,21 +37,20 @@ const App = () => {
     applyCoupon,
   } = useCoupons();
 
-  const {
-    cart,
-    setCart,
-    totalItemCount,
-    addToCart,
-    updateQuantity,
-    calculateCartTotal,
-    calculateItemTotal,
-    removeFromCart,
-    getRemainingStock,
-  } = useCart();
+  // const {
+  //   cart,
+  //   setCart,
+  //   addToCart,
+  //   updateQuantity,
+  //   calculateCartTotal,
+  //   calculateItemTotal,
+  //   removeFromCart,
+  //   getRemainingStock,
+  // } = useCart();
 
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const totals = calculateCartTotal(selectedCoupon);
+  // const totals = calculateCartTotal(selectedCoupon);
   // 검색어로 상품 필터링
   const filteredProducts = filterProductsBySearchTerm(debouncedSearchTerm);
 
@@ -69,9 +68,7 @@ const App = () => {
         rightSide={
           <nav className="flex items-center space-x-4">
             <ToggleButton isAdmin={isAdmin} setIsAdmin={setIsAdmin} />
-            {!isAdmin && (
-              <CartIcon cart={cart} totalItemCount={totalItemCount} />
-            )}
+            {!isAdmin && <CartIcon />}
           </nav>
         }
       />
@@ -97,17 +94,9 @@ const App = () => {
             products={products}
             filteredProducts={filteredProducts}
             debouncedSearchTerm={debouncedSearchTerm}
-            getRemainingStock={getRemainingStock}
-            addToCart={addToCart}
-            cart={cart}
-            setCart={setCart}
-            removeFromCart={removeFromCart}
-            updateQuantity={updateQuantity}
             coupons={coupons}
             selectedCoupon={selectedCoupon}
             applyCoupon={applyCoupon}
-            totals={totals}
-            calculateItemTotal={calculateItemTotal}
             setSelectedCoupon={setSelectedCoupon}
           />
         )}

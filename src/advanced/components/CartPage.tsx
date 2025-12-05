@@ -6,51 +6,30 @@ import { ShoppingCart } from "./cart/ShoppingCart";
 import { SelectCoupon } from "./cart/SelectCoupon";
 import { PaymentInfo } from "./cart/PaymentInfo";
 import { useNotification } from "../hooks/useNotification";
+import { useCart } from "../hooks/useCart";
 
 interface CartPageProps {
   products: ProductWithUI[];
   filteredProducts: ProductWithUI[];
   debouncedSearchTerm: string;
-  getRemainingStock: (product: ProductWithUI) => number;
-  addToCart: (product: ProductWithUI) => void;
-  cart: CartItem[];
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (
-    productId: string,
-    quantity: number,
-    product: ProductWithUI
-  ) => void;
   coupons: Coupon[];
   selectedCoupon: Coupon | null;
-  applyCoupon: (coupon: Coupon, currentTotal: number) => void;
-  totals: {
-    totalBeforeDiscount: number;
-    totalAfterDiscount: number;
-  };
-  calculateItemTotal: (item: CartItem) => number;
   setSelectedCoupon: (coupon: Coupon | null) => void;
-
-  setCart: (cart: CartItem[]) => void;
+  applyCoupon: (coupon: Coupon, currentTotal: number) => void;
 }
 
 const CartPage = ({
   products,
   filteredProducts,
   debouncedSearchTerm,
-  getRemainingStock,
-  cart,
-  setCart,
-  addToCart,
-  removeFromCart,
-  updateQuantity,
   coupons,
   selectedCoupon,
   setSelectedCoupon,
   applyCoupon,
-  totals,
-  calculateItemTotal,
 }: CartPageProps) => {
   const { addNotification } = useNotification();
+  const { cart, setCart } = useCart();
+
   const completeOrder = useCallback(() => {
     const orderNumber = `ORD-${Date.now()}`;
     addNotification(
@@ -81,15 +60,7 @@ const CartPage = ({
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProducts.map((product) => {
-                const remainingStock = getRemainingStock(product);
-                return (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    remainingStock={remainingStock}
-                    addToCart={addToCart}
-                  />
-                );
+                return <ProductCard key={product.id} product={product} />;
               })}
             </div>
           )}
@@ -98,12 +69,7 @@ const CartPage = ({
 
       <div className="lg:col-span-1">
         <div className="sticky top-24 space-y-4">
-          <ShoppingCart
-            cart={cart}
-            calculateItemTotal={calculateItemTotal}
-            removeFromCart={removeFromCart}
-            updateQuantity={updateQuantity}
-          />
+          <ShoppingCart />
 
           {cart.length > 0 && (
             <>
@@ -113,11 +79,10 @@ const CartPage = ({
                   coupons={coupons}
                   applyCoupon={applyCoupon}
                   setSelectedCoupon={setSelectedCoupon}
-                  totals={totals}
                 />
               )}
 
-              <PaymentInfo totals={totals} completeOrder={completeOrder} />
+              <PaymentInfo completeOrder={completeOrder} />
             </>
           )}
         </div>

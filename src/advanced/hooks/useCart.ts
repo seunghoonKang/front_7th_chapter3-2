@@ -1,39 +1,15 @@
-import { useEffect, useState } from "react";
 import { CartItem, Coupon } from "../../types";
 import { ProductWithUI } from "./useProducts";
 import { cartModel } from "../models/cart";
 import { couponModel } from "../models/coupon";
-import { useLocalStorage } from "../utils/hooks/useLocalStorage";
 import { useNotification } from "./useNotification";
-
-// 1. 장바구니 상태 관리 (localStorage 연동)
-// 2. 상품 추가/삭제/수량 변경
-// 3. 쿠폰 적용
-// 4. 총액 계산
-// 5. 재고 확인
-//
-// 사용할 모델 함수:
-// - cartModel.addItemToCart
-// - cartModel.removeItemFromCart
-// - cartModel.updateCartItemQuantity
-// - cartModel.calculateCartTotal
-// - cartModel.getRemainingStock
-//
-// 반환할 값:
-// - cart: 장바구니 아이템 배열
-// - selectedCoupon: 선택된 쿠폰
-// - addToCart: 상품 추가 함수
-// - removeFromCart: 상품 제거 함수
-// - updateQuantity: 수량 변경 함수
-// - applyCoupon: 쿠폰 적용 함수
-// - calculateTotal: 총액 계산 함수
-// - getRemainingStock: 재고 확인 함수
-// - clearCart: 장바구니 비우기 함수
+import { useAtom, useAtomValue } from "jotai";
+import { cartAtom, totalItemCountAtom } from "../atoms/cart";
 
 export const useCart = () => {
   const { addNotification } = useNotification();
-  const [cart, setCart] = useLocalStorage<CartItem[]>("cart", []);
-  const [totalItemCount, setTotalItemCount] = useState(0);
+  const [cart, setCart] = useAtom(cartAtom);
+  const totalItemCount = useAtomValue(totalItemCountAtom);
 
   const addToCart = (product: ProductWithUI) => {
     const remainingStock = cartModel.getRemainingStock(cart, product);
@@ -104,16 +80,10 @@ export const useCart = () => {
     return cartModel.getRemainingStock(cart, product);
   };
 
-  useEffect(() => {
-    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-    setTotalItemCount(count);
-  }, [cart]);
-
   return {
     cart,
     setCart,
     totalItemCount,
-    setTotalItemCount,
     addToCart,
     updateQuantity,
     removeFromCart,

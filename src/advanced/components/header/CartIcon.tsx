@@ -1,11 +1,7 @@
-import { CartItem } from "../../../types";
+import { useCart } from "../../hooks/useCart";
 
-interface CartIconProps {
-  cart: CartItem[];
-  totalItemCount: number;
-}
-
-export const CartIcon = ({ cart, totalItemCount }: CartIconProps) => {
+export const CartIcon = () => {
+  const { cart, totalItemCount } = useCart();
   return (
     <div className="relative">
       <svg

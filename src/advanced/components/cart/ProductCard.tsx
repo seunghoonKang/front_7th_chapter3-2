@@ -1,16 +1,14 @@
+import { useCart } from "../../hooks/useCart";
 import { ProductWithUI } from "../../hooks/useProducts";
 import { formatProductPrice } from "../../utils/formatters";
 
 interface ProductCardProps {
   product: ProductWithUI;
-  remainingStock: number;
-  addToCart: (product: ProductWithUI) => void;
 }
-export const ProductCard = ({
-  product,
-  remainingStock,
-  addToCart,
-}: ProductCardProps) => {
+export const ProductCard = ({ product }: ProductCardProps) => {
+  const { addToCart, getRemainingStock } = useCart();
+  const remainingStock = getRemainingStock(product);
+
   const price =
     remainingStock <= 0 ? "SOLD OUT" : formatProductPrice(product.price);
   return (

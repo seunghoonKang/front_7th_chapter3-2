@@ -1,14 +1,11 @@
 import { Coupon } from "../../../types";
+import { useCart } from "../../hooks/useCart";
 
 interface SelectCouponProps {
   selectedCoupon: Coupon | null;
   coupons: Coupon[];
   applyCoupon: (coupon: Coupon, currentTotal: number) => void;
   setSelectedCoupon: (coupon: Coupon | null) => void;
-  totals: {
-    totalBeforeDiscount: number;
-    totalAfterDiscount: number;
-  };
 }
 
 export const SelectCoupon = ({
@@ -16,8 +13,9 @@ export const SelectCoupon = ({
   coupons,
   applyCoupon,
   setSelectedCoupon,
-  totals,
 }: SelectCouponProps) => {
+  const { calculateCartTotal } = useCart();
+  const totals = calculateCartTotal();
   return (
     <section className="bg-white rounded-lg border border-gray-200 p-4">
       <div className="flex items-center justify-between mb-3">

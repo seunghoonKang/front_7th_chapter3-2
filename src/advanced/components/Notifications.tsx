@@ -1,4 +1,3 @@
-import { notificationsAtom } from "../atoms/notifications";
 import { useNotification } from "../hooks/useNotification";
 
 export const Notifications = () => {
