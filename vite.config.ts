@@ -8,7 +8,14 @@ export default mergeConfig(
     build: {
       outDir: 'dist',
       rollupOptions: {
-        input: './index.advanced.html',
+        input: {
+          main: './index.advanced.html',
+        },
+        output: {
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: 'assets/[name]-[hash].[ext]',
+        },
       },
     },
     base: process.env.GITHUB_PAGES === 'true' ? '/front_7th_chapter3-2/' : '/',
